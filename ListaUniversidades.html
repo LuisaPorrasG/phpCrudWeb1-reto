@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tabla de Universidades y Estudiantes</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Tabla de Universidades</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+        </tr>
+    </table>
+
+    <script>
+        $(document).ready(function () {
+            // Realiza una solicitud AJAX al archivo PHP separado
+            $.ajax({
+                url: 'consultar_universidades.php', // Ruta al archivo PHP
+                dataType: 'json', // Esperamos recibir datos JSON
+                success: function (data) {
+                    var table = $("table"); // Selecciona la tabla
+
+                    // Itera a través de los datos y agrega filas a la tabla
+                    $.each(data, function (index, row) {
+                        var newRow = $("<tr>");
+                        newRow.append("<td>" + row.id + "</td>");
+                        newRow.append("<td>" + row.nombre + "</td>");
+                        table.append(newRow);
+                    });
+                },
+                error: function () {
+                    console.error('Hubo un error al cargar los datos.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

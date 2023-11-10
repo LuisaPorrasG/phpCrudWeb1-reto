@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LISTA UNIVERSIDADES MAS REGISTRO</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!--lista las universidades con jquery-->
+
+    <!--INCLUIR ARCHIVO CSS DE BOOTSTRAP -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Registrar Nueva Universidad</h1>
+        <form>
+            <label for="nombre">Nombre Universidad: </label>
+            <input type="text" id="nombre" name="nombre" required>
+            <br><br>
+
+            <!--BOTON PARA FORMULARIO-->
+            <input type="submit" value="Registrar Universidad">
+        </form>
+        
+
+        <h1>Tabla Universidades</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+        </table>
+        <!--  <tbody id="mi-tabla">
+                
+
+            </tbody>-->
+        <script>
+            $(document).ready(function () {
+                // Realiza una solicitud AJAX al archivo PHP separado
+                $.ajax({
+                    url: 'consultar_universidades.php', // Ruta al archivo PHP
+                    dataType: 'json', // Esperamos recibir datos JSON
+                    success: function (data) {
+                        var table = $("table"); // Selecciona la tabla
+
+                        // Itera a través de los datos y agrega filas a la tabla
+                        $.each(data, function (index, row) {
+                            var newRow = $("<tr>");
+                            newRow.append("<td>" + row.id + "</td>");
+                            newRow.append("<td>" + row.nombre + "</td>");
+                            table.append(newRow);
+                        });
+                    },
+                    error: function () {
+                        console.error('Hubo un error al cargar los datos.');
+                    }
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                
+                $('form').submit(function (event) {
+                    event.preventDefault(); // Evita la recarga de la página
+
+                    // Obtén los datos del formulario
+                    var nombre = $('#nombre').val();
+
+                    // Envía los datos al archivo PHP utilizando AJAX
+                    $.ajax({
+                        url: 'registrar_universidad.php', // URL del archivo PHP que manejará la solicitud
+                        type: 'POST', // Método HTTP utilizado para la solicitud
+                        data: { nombre: nombre }, // Datos que se envían al servidor
+                        success: function (response) {
+                            // Maneja la respuesta del servidor aquí
+                            console.log(response); // Muestra la respuesta en la consola del navegador
+                        },
+                        error: function () {
+                            // Maneja los errores aquí
+                            console.error('Hubo un error al enviar los datos.');
+                        }
+                    });
+                });
+            });
+        </script>
+
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
